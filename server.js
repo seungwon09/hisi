@@ -19,15 +19,19 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: true,
+        secure: false, // 수정된 부분
         sameSite: "lax"
     }
 }));
 
 /* ===== DB ===== */
 const dbPath = path.join(__dirname, "data.db");
+const backupPath = path.join(__dirname, "backup.db");
+
 let db;
-function connectDB(){ db = new sqlite3.Database(dbPath); }
+function connectDB(){
+    db = new sqlite3.Database(dbPath);
+}
 connectDB();
 
 /* ===== 암호화 ===== */
@@ -89,7 +93,7 @@ app.post("/login",(req,res)=>{
     });
 });
 
-/* ===== 인증 체크 ===== */
+/* ===== 인증 ===== */
 function auth(req,res,next){
     if(!req.session.auth) return res.status(403).end();
     next();
@@ -130,6 +134,25 @@ app.post("/data",auth,(req,res)=>{
 /* ===== 로그아웃 ===== */
 app.get("/logout",(req,res)=>{
     req.session.destroy(()=>res.redirect("/index.html"));
+});
+
+/* ===== 백업 ===== */
+app.get("/backup",(req,res)=>{
+    if(!req.session.auth) return res.status(403).end();
+    fs.copyFileSync(dbPath, backupPath);
+    res.download(dbPath);
+});
+
+/* ===== 복구 ===== */
+app.post("/restore",(req,res)=>{
+    if(!req.session.auth) return res.status(403).end();
+    if(!fs.existsSync(backupPath)) return res.status(404).end();
+
+    db.close(()=>{
+        fs.copyFileSync(backupPath, dbPath);
+        connectDB();
+        res.end();
+    });
 });
 
 /* ===== 실행 ===== */
