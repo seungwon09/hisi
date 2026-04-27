@@ -1,54 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body {
-            background: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        input {
-            padding: 20px;
-            font-size: 20px;
-            background: black;
-            color: white;
-            border: 1px solid white;
-            outline: none;
-        }
-    </style>
-</head>
-<body>
-
-<input type="password" id="code" placeholder="ACCESS CODE">
-
 <script>
-const input = document.getElementById("code");
+async function login() {
+    const username = document.getElementById("id").value;
+    const password = document.getElementById("pw").value;
 
-input.addEventListener("keydown", async (e) => {
-    if (e.key === "Enter") {
-        const code = input.value;
+    const res = await fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+    });
 
-        const res = await fetch("/access", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ code })
-        });
-
-        const data = await res.json();
-
-        if (data.success) {
-    window.location.href = "/main.html";
-} else {
-    alert("DENIED");
-}
+    if (res.ok) {
+        window.location.href = "/dashboard.html";
+    } else {
+        alert("로그인 실패");
     }
+}
+
+/* 엔터 키 */
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") login();
 });
 </script>
-
-</body>
-</html>
