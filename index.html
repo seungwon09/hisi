@@ -2,84 +2,35 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>관리 시스템 로그인</title>
+<title>ACCESS</title>
 <style>
 body {
     margin:0;
-    background:#0b0f1a;
-    color:white;
-    font-family:sans-serif;
-}
-.container {
+    background:#000;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
+    color:white;
+    font-family:sans-serif;
 }
 .box {
-    text-align:center;
-}
-h1 {
-    margin-bottom:40px;
-}
-input {
-    display:block;
-    margin:10px auto;
-    padding:10px;
-    width:220px;
-    background:#111;
-    border:1px solid #333;
-    color:white;
-}
-button {
-    padding:10px 20px;
-    margin-top:10px;
-    background:#3b82f6;
-    border:none;
-    color:white;
+    border:1px solid #888;
+    padding:20px 60px;
     cursor:pointer;
-}
-button:hover {
-    background:#2563eb;
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="box">
-        <h1>로그인</h1>
-
-        <input id="id" placeholder="아이디">
-        <input id="pw" type="password" placeholder="비밀번호">
-
-        <button onclick="login()">로그인</button>
-    </div>
+<div class="box" onclick="go()">
+    ACCESS CODE
 </div>
 
 <script>
-async function login() {
-    const username = document.getElementById("id").value;
-    const password = document.getElementById("pw").value;
-
-    const res = await fetch("/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, password })
-    });
-
-    if (res.ok) {
-        window.location.href = "/dashboard.html";
-    } else {
-        alert("로그인 실패");
-    }
+function go(){
+    window.location.href="/main.html";
 }
-
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") login();
-});
 </script>
 
 </body>
