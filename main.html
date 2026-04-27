@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        input {
+            padding: 15px;
+            margin: 10px;
+            background: black;
+            color: white;
+            border: 1px solid white;
+        }
+    </style>
+</head>
+<body>
+
+<input id="username" placeholder="ID">
+<input id="password" type="password" placeholder="PASSWORD">
+
+<script>
+document.addEventListener("keydown", async (e) => {
+    if (e.key === "Enter") {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        const res = await fetch("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+
+        if (res.status === 200) {
+            window.location.href = "/dashboard.html";
+        } else {
+            alert("LOGIN FAIL");
+        }
+    }
+});
+</script>
+
+</body>
+</html>
