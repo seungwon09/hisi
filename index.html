@@ -1,36 +1,37 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>ACCESS</title>
 <style>
-body {
-    margin:0;
-    background:#000;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    color:white;
-    font-family:sans-serif;
-}
-.box {
-    border:1px solid #888;
-    padding:20px 60px;
-    cursor:pointer;
-}
+body {background:black;color:white;display:flex;justify-content:center;align-items:center;height:100vh;}
+input {padding:15px;background:black;border:1px solid #888;color:white;}
 </style>
 </head>
 <body>
 
-<div class="box" onclick="go()">
-    ACCESS CODE
-</div>
+<input id="code" placeholder="ACCESS CODE">
 
 <script>
-function go(){
-    window.location.href="/main.html";
+async function check(){
+    const code = document.getElementById("code").value;
+
+    const res = await fetch("/access", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({code})
+    });
+
+    if(res.ok){
+        location.href="/main.html";
+    } else {
+        alert("코드 틀림");
+    }
 }
+
+document.addEventListener("keydown", e=>{
+    if(e.key==="Enter") check();
+});
 </script>
 
 </body>
