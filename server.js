@@ -9,6 +9,9 @@ const crypto = require("crypto");
 const app = express();
 app.use(express.json());
 
+/* ===== 프록시 설정 (중요) ===== */
+app.set("trust proxy", 1);
+
 /* ===== 환경변수 ===== */
 const SESSION_SECRET = process.env.SESSION_SECRET || "dev-secret";
 
@@ -19,7 +22,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false, // 수정된 부분
+        secure: true,
         sameSite: "lax"
     }
 }));
