@@ -1,3 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+</head>
+<body style="background:black;color:white;text-align:center;margin-top:100px;">
+
+<h1>로그인</h1>
+
+<input id="id" placeholder="아이디"><br><br>
+<input id="pw" type="password" placeholder="비밀번호"><br><br>
+
+<button onclick="login()">로그인</button>
+
 <script>
 async function login() {
     const username = document.getElementById("id").value;
@@ -12,14 +27,16 @@ async function login() {
     });
 
     if (res.ok) {
-        window.location.href = "/dashboard.html";
+        location.href = "/dashboard.html";
     } else {
-        alert("로그인 실패");
+        alert("실패");
     }
 }
 
-/* 엔터 키 */
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") login();
+document.addEventListener("keydown",(e)=>{
+    if(e.key==="Enter") login();
 });
 </script>
+
+</body>
+</html>
